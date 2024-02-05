@@ -1,0 +1,282 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="/css/styles.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+
+  <body>
+    <div id="overlay_popup" class="overlay-popup"></div>
+    <div id="hover-over-container">
+      <div id="popup-container">
+        <header id="popup">
+          <div>
+            Agents Online:&nbsp;&nbsp;
+            <a id="numOfAgentsOnline">0</a>
+          </div>
+        </header>
+      </div>
+    </div>
+    <div id="hover-dash-container">
+      <div id="dash-popup">
+        <div id="dash-contents">
+          <div id="dashboard">
+            <div id="user-info">
+              <!-- <img class="logo" src="rocket-logos_transparent.png" /> -->
+              <!-- <div id="user-info-text">
+                <h2>Admin</h2>
+              </div> -->
+            </div>
+            <div style="margin: 1rem 0">
+              <label class="switch">
+                <input id="dark-mode" type="checkbox" />
+                <span class="slider round"></span>
+              </label>
+            </div>
+            <div id="dashboard-tabs">
+              <button id="dashboard-button" class="inactive-tab">
+                Dashboard
+              </button>
+              <button id="analytics-button" class="inactive-tab">
+                Analytics
+              </button>
+              <button id="rank-button" class="inactive-tab">Rank</button>
+              <button id="connect-button" class="active-tab">Settings</button>
+              <button id="test-data-button" class="inactive-tab">
+                Send Test Data
+              </button>
+              <div class="select-dropdown">
+                <select id="theme-select" onChange="themeChange()">
+                  <option value="0">Default</option>
+                  <option value="1">Blue</option>
+                  <option value="2">Green</option>
+                  <option value="3">Orange</option>
+                  <option value="4">Dry</option>
+                  <option value="5">Grey</option>
+                  <option value="6">Pastel</option>
+                  <option value="7">Purple</option>
+                  <option value="8">Sky</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="main-content">
+      <div id="grid-container">
+        <canvas></canvas>
+      </div>
+      <div id="chart-container">
+        <div class="status-cards" id="status_cards"></div>
+        <div class="charts-row-display">
+          <div class="lines-section">
+            <canvas id="lines-chart" class="chart"></canvas>
+            <!-- <canvas id="bar-chart" class="chart"></canvas> -->
+          </div>
+          <div class="charts-section">
+            <div style="display: flex; flex-direction: row">
+              <div class="pie-donut">
+                <canvas id="pie-chart" class="chart"></canvas>
+                <canvas
+                  id="donut-chart"
+                  style="display: none"
+                  class="chart"
+                ></canvas>
+                <canvas
+                  id="polar-chart"
+                  style="display: none"
+                  class="chart"
+                ></canvas>
+              </div>
+              <button id="switch-chart" class="switch-btn">Switch</button>
+            </div>
+
+            <canvas id="bar-chart" class="chart"></canvas>
+          </div>
+        </div>
+      </div>
+      <div id="rank-container">
+        <button id="rank-btn">Refresh</button>
+        <div id="rank-results"></div>
+      </div>
+      <div id="settings-container">
+        <div class="div-row">
+          <h2>Settings</h2>
+          <button class="status-defined" id="status_header">
+            <b>Status</b>&nbsp;&nbsp;Data Fields Not Defined
+          </button>
+        </div>
+
+        <div class="div-row">
+          <button class="settings-tabs activebtn" id="connect-tab">
+            How to Connect
+          </button>
+          <button class="settings-tabs" id="define-tab">
+            Define JSON Fields
+          </button>
+        </div>
+        <div id="connect-container" class="settings-info-containers">
+          <h2>API Connection Documentation</h2>
+          <hr />
+          <h2>What you will need:</h2>
+          <p>Your generated API Token (found below):</p>
+          <div class="div-row">
+            <div class="header-div">API Token</div>
+            <div class="token-div" id="api_token_string"></div>
+          </div>
+          <br />
+          <i
+            >If no token is found, please make sure you are logged in and
+            registered.</i
+          >
+          <br />
+          <hr />
+          <br />
+          <h5>Send an HTTPS POST request to the API endpoint:</h5>
+          <br />
+          <div class="div-row">
+            <div class="header-div">Action Type</div>
+            <div class="get-req">
+              <p>POST</p>
+              <p>
+                <i class="arrow-down"></i>
+              </p>
+            </div>
+            <div class="api-url">https://agentapi.com/api/data</div>
+          </div>
+          <br />
+          <div class="div-row">
+            <div class="header-div">Headers</div>
+            <div class="header-text">auth-token</div>
+            <div class="header-text">YOUR_API_TOKEN</div>
+          </div>
+          <br />
+          <br />
+          <p>URL Parameters do <b>NOT</b> need to be specified.</p>
+          <i
+            >Without the Authentication header, the API will not receive the
+            data.</i
+          >
+          <br />
+          <hr />
+          <h5>FORMAT</h5>
+          <p>Your data should be in JSON format.</p>
+          <p>Example:</p>
+          <div class="connect-json-span">
+            {<br />
+            <span class="json-colors">"id"</span>: 78912,<br />
+            <span class="json-colors">'name"</span>: "Jason Sweet",<br />
+            <span class="json-colors">'quantity"</span>: 1,<br />
+            <span class="json-colors">'price"</span>: 18.00<br />
+            }<br />
+          </div>
+          <br />
+        </div>
+        <div
+          id="define-container"
+          class="settings-info-containers"
+          style="display: none"
+        >
+          <br />
+          <h2>Define JSON data</h2>
+          <h4>
+            Please specify the path which will be used by the api for updates.
+          </h4>
+          <br />
+          <div class="api-data-form" id="data-defs-container">
+            <div class="div-row">
+              <label>Identification Field</label
+              ><input
+                type="text"
+                id="id_field_input"
+                placeholder="example: info.id"
+              />
+            </div>
+            <i>The ID is used to differentiate between data objects.</i>
+            <br />
+            <div class="div-row">
+              <label>Status / State Change</label
+              ><input
+                type="text"
+                id="status_field_input"
+                placeholder="example: info.status"
+              />
+            </div>
+            <i
+              >This field will be the source of the status change which will be
+              read.</i
+            >
+            <div class="div-row">
+              <label>Time Stamp</label
+              ><input
+                type="text"
+                id="time_field_input"
+                placeholder="example: info.timestamp"
+              />
+            </div>
+            <i
+              >The time stamp field will help show time spent in each status
+              (from above)</i
+            >
+            <br />
+            <br />
+          </div>
+          <div id="data-buttons-container">
+            <button id="add-data-field">Add more fields</button>
+            <br />
+            <button id="submit-data-defs">Submit Changes</button>
+            <br />
+          </div>
+
+          <br />
+          <div>EXAMPLES</div>
+          <h4>JSON Data:</h4>
+          <br />
+          <div>
+            <p>
+              { <br />"header": {<br />
+              &emsp;"id": "1",<br />
+              &emsp;"info": {<br />
+              &emsp;&emsp;"name": "Joe",<br />
+              &emsp;&emsp;},<br />
+              &emsp;},<br />
+              "payload": {<br />
+              &emsp;"status": "offline", <br />
+              &emsp;},<br />
+              }<br />
+            </p>
+            <p>Path and Name for 'Identification Field': header.id</p>
+            <p>Path and Name for 'Status': payload.status</p>
+            <p>Path and Name for additional field 'Name': header.info.name</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.slim.min.js"></script>
+    <script
+      src="https://cdn.socket.io/4.5.3/socket.io.min.js"
+      integrity="sha384-WPFUvHkB1aHA5TDSZi6xtDgkF0wXJcIIxXhC6h8OT8EH3fC5PWro5pWJ1THjcfEi"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="../../js/dimensions.js"></script>
+    <script src="../../js/themes.js"></script>
+    <script src="../../js/agentClass.js"></script>
+    <script src="../../js/charts.js"></script>
+    <script type="text/javascript" src="../../js/index.js"></script>
+  </body>
+</html>
